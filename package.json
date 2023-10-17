@@ -1,5 +1,5 @@
 {
-  "name": "webnetqjs",
+  "name": "webnetq-js",
   "version": "0.0.1",
   "description": "WebPack base module",
   "main": "index.js",
