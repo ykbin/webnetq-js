@@ -1,5 +1,7 @@
+let _locationParser = null;
 
-const _locationParser  = document.createElement("a");
+if (typeof document === 'object' && document !== null)
+  _locationParser = document.createElement("a");
 
 const kSchemePortMap = {
   ftp: 21,
