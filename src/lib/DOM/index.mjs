@@ -1,4 +1,5 @@
 import documentReady from './DocumentReady.mjs';
+import getElementByClassName from './GetElementByClassName.mjs';
 
 let templateElement = null;
 if (typeof document === 'object' && document !== null) {
@@ -15,4 +16,5 @@ const createElement = (html) => {
 export default {
   documentReady,
   createElement,
+  getElementByClassName,
 };
