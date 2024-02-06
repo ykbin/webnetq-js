@@ -12,7 +12,6 @@ export default class ControlManager {
 
   _constructorControls = [];
   _controls = [];
-  _elementToControlMap = new Map();
   _idToControlMap = new Map();
   _listeners = {
     load: [],
@@ -23,7 +22,7 @@ export default class ControlManager {
   }
 
   _onLoad() {
-    const _manager = this;
+    const _elementToControlMap = new Map();
     for(const Control of this._constructorControls) {
       const idToControlMap = new Map();
       const elementToControlMap = new Map();
@@ -35,19 +34,13 @@ export default class ControlManager {
       const elements = document.getElementsByClassName(Control.template.rootClass);
       for (const element of elements) {
         const control = new Control(element);
-        Object.defineProperty(control, "manager", {
-          value: _manager,
-          writable: false,
-          configurable: false,
-          enumerable: false,
-        });
-
+        control._manager = this; // FIXME
         if (element.id) {
           idToControlMap.set(element.id, control);
           this._idToControlMap.set(element.id, control);
         }
         elementToControlMap.set(element, control);
-        this._elementToControlMap.set(element, control);
+        _elementToControlMap.set(element, control);
 
         this._controls.push(control);
       }
@@ -59,7 +52,7 @@ export default class ControlManager {
         const element = control.element;
         const portElm = NQDOM.getElementByClassName(element, portClass);
         portElm && Array.prototype.forEach.call(portElm.children, (iter) => {
-          const childControl = this._elementToControlMap.get(iter);
+          const childControl = _elementToControlMap.get(iter);
           if (childControl) {
             control.appendControl(childControl, true);
           }
@@ -78,18 +71,39 @@ export default class ControlManager {
       if (Constructor) {
         const rootHTML = Constructor.template.rootHTML;
         const element = NQDOM.createElement(rootHTML);
-        const _manager = this;
-        const control = new Constructor(element);
-        Object.defineProperty(control, "manager", {
-          value: _manager,
-          writable: false,
-          configurable: false,
-          enumerable: false,
-        });
-        return control;
+        return new Constructor(element);
       }
     }
     return null;
+  }
+
+  appendControl(control) {
+    const index = this._controls.indexOf(control);
+    if (index !== -1) {
+      console.warn(`The logic of the Control is broken`);
+      return;
+    }
+    this._controls.push(control);
+    const id = control.element.id;
+    if (id) {
+      idToControlMap.set(id, control);
+      this._idToControlMap.set(id, control);
+    }
+  }
+
+  removeControl(control) {
+    const index = this._controls.indexOf(control);
+    if (index === -1) {
+      console.warn(`The logic of the Control is broken`);
+      return;
+    }
+    this._controls.slice(index, 1);
+    for (const [key, val ] of this._idToControlMap) {
+      if (val === control) {
+        this._idToControlMap.delete(key);
+        break;
+      }
+    }
   }
 
   getControl(param) {
