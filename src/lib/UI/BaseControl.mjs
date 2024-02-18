@@ -8,10 +8,13 @@ export default class BaseControl {
   _element;
   _portElement;
 
+  _defaultDisplay;
+
   constructor(element) {
     this._element = element;
     const portClass = this.constructor.template.portClass;
     this._portElement = NQDOM.getElementByClassName(element, portClass);
+    this._defaultDisplay = this._element.style.display;
   }
 
   get element() {
@@ -20,6 +23,14 @@ export default class BaseControl {
 
   get dataset() {
     return this._element.dataset;
+  }
+
+  show() {
+    this._element.style.display = this._defaultDisplay;
+  }
+
+  hide() {
+    this._element.style.display = 'none';
   }
 
   getControl(param) {
