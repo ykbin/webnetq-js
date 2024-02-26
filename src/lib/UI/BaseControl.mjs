@@ -72,7 +72,7 @@ export default class BaseControl {
     this._children.forEach(control => control.setManager(manager));
   }
 
-  appendControl(control, managerAppend) {
+  insertControl(position, control, attachControl) {
     if (control._parent) {
       console.warn(`Control '${this.constructor.template.name}' already has a parent`);
       return;
@@ -81,12 +81,20 @@ export default class BaseControl {
       console.warn(`Port not exists for ${this.constructor.template.name}`);
       return;
     }
-    if (!managerAppend) {
-      this._portElement.appendChild(control.element);
+    const pos = Math.min(position, this._children.length);
+    if (!attachControl) {
+      if (pos == this._children.length)
+        this._portElement.appendChild(control.element);
+      else
+        this._portElement.insertBefore(control.element, this._portElement.children[pos]);
       this._manager && control.setManager(this._manager);
     }
     control._parent = this;
-    this._children.push(control);
+    this._children.splice(pos, 0, control);
+  }
+
+  appendControl(control, attachControl) {
+    this.insertControl(this._children.length, control, attachControl);
   }
 
   removeControl(control) {
