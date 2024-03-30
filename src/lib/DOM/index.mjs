@@ -1,5 +1,6 @@
 import documentReady from './DocumentReady.mjs';
 import getElementByClassName from './GetElementByClassName.mjs';
+import escapeHTML from './EscapeHTML.mjs';
 
 let templateElement = null;
 if (typeof document === 'object' && document !== null) {
@@ -17,4 +18,5 @@ export default {
   documentReady,
   createElement,
   getElementByClassName,
+  escapeHTML,
 };
