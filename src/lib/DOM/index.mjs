@@ -2,8 +2,10 @@ import documentReady from './DocumentReady.mjs';
 import getElementByClassName from './GetElementByClassName.mjs';
 import escapeHTML from './EscapeHTML.mjs';
 
+const isExistsDocument = () => (typeof document === 'object' && document !== null);
+
 let templateElement = null;
-if (typeof document === 'object' && document !== null) {
+if (isExistsDocument) {
   templateElement = document.createElement('template');
 }
 
@@ -14,9 +16,17 @@ const createElement = (html) => {
   return templateElement.content.firstElementChild;
 };
 
+const setTextContent = (val, text) => {
+  const element = (typeof val === "string") ? (isExistsDocument ? document.getElementById(val) : null) : val;
+  if (element) {
+    element.textContent = text;
+  }
+};
+
 export default {
   documentReady,
   createElement,
   getElementByClassName,
   escapeHTML,
+  setTextContent,
 };
