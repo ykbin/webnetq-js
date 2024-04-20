@@ -2,7 +2,7 @@ import documentReady from './DocumentReady.mjs';
 import getElementByClassName from './GetElementByClassName.mjs';
 import escapeHTML from './EscapeHTML.mjs';
 
-const isExistsDocument = () => (typeof document === 'object' && document !== null);
+const isExistsDocument = (typeof document === 'object' && document !== null);
 
 let templateElement = null;
 if (isExistsDocument) {
