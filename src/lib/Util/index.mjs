@@ -2,9 +2,24 @@ import sleepAsync from './SleepAsync.mjs';
 import { isEqualArray } from './ArrayExtras.mjs';
 import { bufferToString } from './BufferToString.mjs';
 
+function getGlobalThis() {
+  if (typeof globalThis !== 'undefined')
+    return globalThis;
+  if (typeof window !== 'undefined')
+    return window;
+  if (typeof self !== 'undefined')
+    return self;
+  if (typeof global !== 'undefined')
+    return global;
+  return this;
+}
+
 export default {
   isEqualArray,
   bufferToString,
+
+  getGlobalThis,
+  globalThis: getGlobalThis(),
 
   createObjectURL: (() => {
     if (typeof window != "undefined") {
