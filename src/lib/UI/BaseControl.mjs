@@ -9,6 +9,7 @@ export default class BaseControl {
   _portElement;
 
   _defaultDisplay;
+  _listeners = {};
 
   constructor(element) {
     this._element = element;
@@ -124,5 +125,30 @@ export default class BaseControl {
 
   remove() {
     this._parent && this._parent.removeControl(this);
+  }
+
+  registerEvent(...args) {
+    for (const iter of args) {
+      if (Array.isArray(iter)) {
+        for (const type of iter) {
+          if (!this._listeners.hasOwnProperty(type)) {
+            this._listeners[type] = [];
+          }
+        }
+      }
+      else {
+        if (!this._listeners.hasOwnProperty(iter)) {
+          this._listeners[iter] = [];
+        }
+      }
+    }
+  }
+
+  dispatchEvent(type, event) {
+    this._listeners[type].forEach(listener => listener(event));
+  }
+
+  addEventListener(type, listener) {
+    this._listeners[type].push(listener);
   }
 };
