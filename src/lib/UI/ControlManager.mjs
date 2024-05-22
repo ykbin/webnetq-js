@@ -21,20 +21,28 @@ export default class ControlManager {
     NQDOM.documentReady(() => this._onLoad());
   }
 
+  _createControl(Control, element) {
+    const control = new Control(element);
+    control._manager = this;
+    if (control._init) {
+      control._init();
+    }
+    return control;
+  }
+
   _onLoad() {
     const _elementToControlMap = new Map();
-    for(const Control of this._constructorControls) {
+    for(const Constructor of this._constructorControls) {
       const idToControlMap = new Map();
       const elementToControlMap = new Map();
       
-      Control.get = (id) => {
+      Constructor.get = (id) => {
         return idToControlMap.get(id);
       };
 
-      const elements = document.getElementsByClassName(Control.template.rootClass);
+      const elements = document.getElementsByClassName(Constructor.template.rootClass);
       for (const element of elements) {
-        const control = new Control(element);
-        control._manager = this; // FIXME
+        const control = this._createControl(Constructor, element);
         if (element.id) {
           idToControlMap.set(element.id, control);
           this._idToControlMap.set(element.id, control);
@@ -71,7 +79,7 @@ export default class ControlManager {
       if (Constructor) {
         const rootHTML = Constructor.template.rootHTML;
         const element = NQDOM.createElement(rootHTML);
-        return new Constructor(element);
+        return this._createControl(Constructor, element);
       }
     }
     return null;
