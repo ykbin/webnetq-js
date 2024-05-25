@@ -23,7 +23,6 @@ export default class ControlManager {
 
   _createControl(Control, element) {
     const control = new Control(element);
-    control._manager = this;
     if (control._init) {
       control._init();
     }
@@ -43,6 +42,7 @@ export default class ControlManager {
       const elements = document.getElementsByClassName(Constructor.template.rootClass);
       for (const element of elements) {
         const control = this._createControl(Constructor, element);
+        control._manager = this; // FIXME
         if (element.id) {
           idToControlMap.set(element.id, control);
           this._idToControlMap.set(element.id, control);
