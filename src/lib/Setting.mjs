@@ -1,10 +1,6 @@
-
-const THEME_KEY = 'theme';
-
-const THEME = {
-  LIGHT: 'light',
-  DARK:  'dark',
-};
+const LIGHT_VAL = 'light';
+const DARK_VAL = 'dark';
+const DATA_KEY = 'theme';
 
 let _instance = null;
 
@@ -16,14 +12,14 @@ export default class Setting {
   };
 
   constructor() {
-    let colorScheme = localStorage ? localStorage.getItem(THEME_KEY) : null;
+    let colorScheme = localStorage ? localStorage.getItem(DATA_KEY) : null;
     if (window && window.matchMedia) {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      this._prefersColorScheme = mediaQuery.matches ? THEME.DARK : THEME.LIGHT;
+      this._prefersColorScheme = mediaQuery.matches ? DARK_VAL : LIGHT_VAL;
       mediaQuery.addEventListener('change', event => this.onPrefersColorSchemeChange(event));
     }
-    if (colorScheme != THEME.LIGHT && colorScheme != THEME.DARK) {
-      colorScheme = this._prefersColorScheme || THEME.LIGHT;
+    if (colorScheme != LIGHT_VAL && colorScheme != DARK_VAL) {
+      colorScheme = this._prefersColorScheme || LIGHT_VAL;
     }
     this.setColorScheme(colorScheme);
   }
@@ -33,23 +29,23 @@ export default class Setting {
   }
 
   setTheme(value) {
-    if (value == THEME.LIGHT || value == THEME.DARK) {
+    if (value == LIGHT_VAL || value == DARK_VAL) {
       if (localStorage) {
         if (this._prefersColorScheme != value)
-          localStorage.setItem(THEME_KEY, value);
+          localStorage.setItem(DATA_KEY, value);
         else
-          localStorage.removeItem(THEME_KEY);
+          localStorage.removeItem(DATA_KEY);
       }
       this.setColorScheme(value);
     }
     else {
-      localStorage && localStorage.removeItem(THEME_KEY);
-      this.setColorScheme(this._prefersColorScheme || THEME.LIGHT);
+      localStorage && localStorage.removeItem(DATA_KEY);
+      this.setColorScheme(this._prefersColorScheme || LIGHT_VAL);
     }
   }
 
   toggleTheme() {
-    this.setTheme((this._colorScheme != THEME.LIGHT) ? THEME.LIGHT : THEME.DARK);
+    this.setTheme((this._colorScheme != LIGHT_VAL) ? LIGHT_VAL : DARK_VAL);
   }
 
   setColorScheme(colorScheme) {
@@ -60,8 +56,8 @@ export default class Setting {
   }
 
   onPrefersColorSchemeChange(event) {
-    this._prefersColorScheme = event.matches ? THEME.DARK : THEME.LIGHT;
-    localStorage && localStorage.removeItem(THEME_KEY);
+    this._prefersColorScheme = event.matches ? DARK_VAL : LIGHT_VAL;
+    localStorage && localStorage.removeItem(DATA_KEY);
     this.setColorScheme(this._prefersColorScheme);
   }
 
@@ -79,3 +75,7 @@ export default class Setting {
     return _instance;
   }
 };
+
+Setting.LIGHT_VAL = LIGHT_VAL;
+Setting.DARK_VAL = DARK_VAL;
+Setting.DATA_KEY = DATA_KEY;
