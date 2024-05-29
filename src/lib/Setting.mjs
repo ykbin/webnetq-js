@@ -78,4 +78,4 @@ export default class Setting {
 
 Setting.LIGHT_VAL = LIGHT_VAL;
 Setting.DARK_VAL = DARK_VAL;
-Setting.DARK_VAL = DARK_VAL;
+Setting.DATA_KEY = DATA_KEY;
