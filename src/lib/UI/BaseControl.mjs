@@ -11,8 +11,10 @@ export default class BaseControl {
   _defaultDisplay;
   _listeners = {};
 
-  constructor(element) {
+  constructor(element, template) {
     this._element = element;
+    this._template = template;
+
     const portClass = this.constructor.template.portClass;
     this._portElement = NQDOM.getElementByClassName(element, portClass);
     this._defaultDisplay = this._element.style.display;
