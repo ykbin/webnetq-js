@@ -9,3 +9,4 @@ export { default as Setting } from './lib/Setting.mjs';
 export { default as Util } from './lib/Util/index.mjs';
 export { fileRequest } from './lib/FileRequest.mjs';
 export { default as FileChunkLoader } from './lib/FS/FileChunkLoader.mjs';
+export * as BuildScript from './lib/BuildScript/index.mjs';
