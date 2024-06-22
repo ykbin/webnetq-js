@@ -28,6 +28,10 @@ export default class BaseControl {
     return this._element.dataset;
   }
 
+  get template() {
+    return this._template;
+  }
+
   show() {
     this._element.style.display = this._defaultDisplay;
   }
