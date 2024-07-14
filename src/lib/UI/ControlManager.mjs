@@ -10,7 +10,7 @@ export default class ControlManager {
     return s_instance;
   }
 
-  _constructorControls = [];
+  _components = [];
   _controls = [];
   _idToControlMap = new Map();
   _listeners = {
@@ -21,8 +21,8 @@ export default class ControlManager {
     NQDOM.documentReady(() => this._onLoad());
   }
 
-  _createControl(Control, element) {
-    const control = new Control(element);
+  _createControl(ctor, element) {
+    const control = new ctor(element, ctor.template);
     if (control._init) {
       control._init();
     }
@@ -31,17 +31,17 @@ export default class ControlManager {
 
   _onLoad() {
     const _elementToControlMap = new Map();
-    for(const Constructor of this._constructorControls) {
+    for(const { ctor, template } of this._components) {
       const idToControlMap = new Map();
       const elementToControlMap = new Map();
       
-      Constructor.get = (id) => {
+      ctor.get = (id) => {
         return idToControlMap.get(id);
       };
 
-      const elements = document.getElementsByClassName(Constructor.template.rootClass);
+      const elements = document.getElementsByClassName(template.rootClass);
       for (const element of elements) {
-        const control = this._createControl(Constructor, element);
+        const control = this._createControl(ctor, element);
         control._manager = this; // FIXME
         if (element.id) {
           idToControlMap.set(element.id, control);
@@ -55,7 +55,7 @@ export default class ControlManager {
     }
 
     for (const control of this._controls) {
-      const portClass = control.constructor.template.portClass;
+      const portClass = control.template.portClass;
       if (portClass) {
         const element = control.element;
         const portElm = NQDOM.getElementByClassName(element, portClass);
@@ -74,17 +74,17 @@ export default class ControlManager {
   }
 
   createControl(param) {
-    let Constructor;
+    let component;
     if (typeof param === 'string') {
-      Constructor = this._constructorControls.find((i) => i.template.name === param);
+      component = this._components.find((i) => i.template.name === param);
     }
     else if (typeof param === 'function') {
-      Constructor = this._constructorControls.find((i) => i === param);
+      component = this._components.find((i) => i.ctor === param);
     }
-    if (Constructor) {
-      const rootHTML = Constructor.template.rootHTML;
+    if (component) {
+      const rootHTML = component.template.rootHTML;
       const element = NQDOM.createElement(rootHTML);
-      return this._createControl(Constructor, element);
+      return this._createControl(component.ctor, element);
     }
     return null;
   }
@@ -123,7 +123,7 @@ export default class ControlManager {
       return this._controls.find((i) => i.constructor === param);
     }
     if (typeof param === 'string') {
-      return this._controls.find((i) => i.constructor.template.name === param);
+      return this._controls.find((i) => i.template.name === param);
     }
     return undefined;
   }
@@ -133,14 +133,14 @@ export default class ControlManager {
       return this._controls.filter((i) => i.constructor === param);
     }
     if (typeof param === 'string') {
-      return this._controls.filter((i) => i.constructor.template.name === param);
+      return this._controls.filter((i) => i.template.name === param);
     }
     return [];
   }
 
-  register(ControlConstructor) {
-    if (typeof ControlConstructor === 'function') {
-      this._constructorControls.push(ControlConstructor);
+  register(ctor, template) {
+    if (typeof ctor === 'function') {
+      this._components.push({ ctor, template });
     }
   }
 
