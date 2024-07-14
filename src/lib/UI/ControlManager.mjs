@@ -21,8 +21,8 @@ export default class ControlManager {
     NQDOM.documentReady(() => this._onLoad());
   }
 
-  _createControl(ctor, element) {
-    const control = new ctor(element, ctor.template);
+  _createControl(ctor, element, template) {
+    const control = new ctor(element, template);
     if (control._init) {
       control._init();
     }
@@ -41,7 +41,7 @@ export default class ControlManager {
 
       const elements = document.getElementsByClassName(template.rootClass);
       for (const element of elements) {
-        const control = this._createControl(ctor, element);
+        const control = this._createControl(ctor, element, template);
         control._manager = this; // FIXME
         if (element.id) {
           idToControlMap.set(element.id, control);
@@ -84,7 +84,7 @@ export default class ControlManager {
     if (component) {
       const rootHTML = component.template.rootHTML;
       const element = NQDOM.createElement(rootHTML);
-      return this._createControl(component.ctor, element);
+      return this._createControl(component.ctor, element, component.template);
     }
     return null;
   }
