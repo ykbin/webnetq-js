@@ -15,7 +15,7 @@ export default class BaseControl {
     this._element = element;
     this._template = template;
 
-    const portClass = this.constructor.template.portClass;
+    const portClass = template.portClass;
     this._portElement = NQDOM.getElementByClassName(element, portClass);
     this._defaultDisplay = this._element.style.display;
   }
@@ -45,7 +45,7 @@ export default class BaseControl {
       return this._children.find((i) => i.constructor === param);
     }
     if (typeof param === 'string') {
-      return this._children.find((i) => i.constructor.template.name === param);
+      return this._children.find((i) => i.template.name === param);
     }
     return undefined;
   }
@@ -55,7 +55,7 @@ export default class BaseControl {
       return this._children.filter((i) => i.constructor === param);
     }
     if (typeof param === 'string') {
-      return this._children.filter((i) => i.constructor.template.name === param);
+      return this._children.filter((i) => i.template.name === param);
     }
     return [];
   }
@@ -81,11 +81,11 @@ export default class BaseControl {
 
   insertControl(position, control, attachControl) {
     if (control._parent) {
-      console.warn(`Control '${this.constructor.template.name}' already has a parent`);
+      console.warn(`Control '${this.template.name}' already has a parent`);
       return;
     }
     if (!this._portElement) {
-      console.warn(`Port not exists for ${this.constructor.template.name}`);
+      console.warn(`Port not exists for ${this.template.name}`);
       return;
     }
     const pos = Math.min(position, this._children.length);
