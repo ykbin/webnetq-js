@@ -173,8 +173,19 @@ export function fileRequest(url, options) {
 
   const formData = new FormData();
 
+  let result = undefined;
   let multiple = false;
-  let onHandler = () => {};
+
+  let listeners = [];
+  const emitHandler = (error, result) => {
+    if (error) {
+      if (typeof error === "string")
+        error = { message: error };
+      if (typeof error === "number")
+        error = { message: "Code " + error };
+    }
+    listeners.forEach(listener => listener(error, result));
+  };
 
   for (const name in options) {
     if (options.hasOwnProperty(name)) {
@@ -194,16 +205,13 @@ export function fileRequest(url, options) {
       case 'multiple':
         multiple = options[name];
         break;
+      case 'async':
+        result = !options[name] ? undefined : new Promise((resolve, reason) => {
+          listeners.push((error, result) => error ? reason(error) : resolve(result));
+        });
+        break;
       case 'onHandler':
-        onHandler = function(error, result) {
-          if (error) {
-            if (typeof error === "string")
-              error = { message: error };
-            else if (typeof error === "number")
-              error = { message: "Code " + error };
-          }
-          options.onHandler(error, result);
-        };
+        listeners.push((error, result) => options.onHandler(error, result));
         break;
       default:
         formData.append(name, JSON.stringify(options[name]));
@@ -213,7 +221,7 @@ export function fileRequest(url, options) {
   }
 
   request.addEventListener('error', function(event) {
-    onHandler("Can't connected to server");
+    emitHandler("Can't connected to server");
   });
 
   request.addEventListener('load', function(event) {
@@ -227,7 +235,7 @@ export function fileRequest(url, options) {
           json = JSON.parse(str);
         }
         catch(e) {
-          onHandler(e.message);
+          emitHandler(e.message);
           success = false
         }
         if (success) {
@@ -242,34 +250,36 @@ export function fileRequest(url, options) {
               error.message = json.error.message + suffix;
             else if (suffix)
               error.message = "Problem code" + suffix;
-            onHandler(error);
+            emitHandler(error);
           }
           else if (json.hasOwnProperty('result')) {
-            onHandler(null, json.result);
+            emitHandler(null, json.result);
           }
           else {
-            onHandler(null, new Blob([this.response], { type: type }));
+            emitHandler(null, new Blob([this.response], { type: type }));
           }
         }
       }
       else if (multiple && type === "application/x-tar") {
         const files = tarballToFileList(this.response);
         if (files) {
-          onHandler(null, files);
+          emitHandler(null, files);
         }
         else {
-          onHandler(null, new Blob([this.response], { type: type }));
+          emitHandler(null, new Blob([this.response], { type: type }));
         }
       }
       else {
-        onHandler(null, new Blob([this.response], { type: type }));
+        emitHandler(null, new Blob([this.response], { type: type }));
       }
     } else {
-      onHandler("Request status " + this.status);
+      emitHandler("Request status " + this.status);
     }
   });
 
   request.open("POST", url);
   request.responseType = 'arraybuffer';
   request.send(formData);
+
+  return result;
 };
