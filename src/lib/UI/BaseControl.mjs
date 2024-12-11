@@ -155,6 +155,9 @@ export default class BaseControl {
   }
 
   addEventListener(type, listener) {
-    this._listeners[type].push(listener);
+    if (this._listeners[type])
+      this._listeners[type].push(listener);
+    else
+      console.warn(`Event type '${type}' not registered`);
   }
 };
