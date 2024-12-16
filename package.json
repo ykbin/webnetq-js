@@ -6,16 +6,16 @@
   "main": "src/index.mjs",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yakubins/webnetq-js.git"
+    "url": "git+https://github.com/ykbin/webnetq-js.git"
   },
   "keywords": [
     "web"
   ],
   "author": "Yurii Yakubin",
   "bugs": {
-    "url": "https://github.com/yakubins/webnetq-js/issues"
+    "url": "https://github.com/ykbin/webnetq-js/issues"
   },
-  "homepage": "https://github.com/yakubins/webnetq-js#readme",
+  "homepage": "https://github.com/ykbin/webnetq-js#readme",
   "dependencies": {
   }
 }
