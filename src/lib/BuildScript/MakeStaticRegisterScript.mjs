@@ -5,7 +5,7 @@ export default function(module)
   let scriptContent = `import { ControlManager } from 'webnetq-js';\n\n`;
 
   for (const key in CTLS) {
-    scriptContent += `import { default as ${key} } from '${PKG}/control/${key}';\n`;
+    scriptContent += `import { ${key} } from '${PKG}/control/${key}';\n`;
   };
   scriptContent += `\n`;
 
