@@ -4,6 +4,7 @@
   "description": "Basic library for the Web",
   "type": "module",
   "main": "src/index.mjs",
+  "types": "src/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ykbin/webnetq-js.git"
