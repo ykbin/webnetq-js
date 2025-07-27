@@ -4,14 +4,14 @@ import escapeHTML from './EscapeHTML.mjs';
 
 const isExistsDocument = (typeof document === 'object' && document !== null);
 
-let templateElement = null;
+let templateElement;
 if (isExistsDocument) {
   templateElement = document.createElement('template');
 }
 
 const createElement = (html) => {
   if (!templateElement || typeof html !== "string")
-    return null;
+    return undefined;
   templateElement.innerHTML = html;
   return templateElement.content.firstElementChild;
 };
