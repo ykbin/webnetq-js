@@ -10,6 +10,14 @@ function setTextContent(val: HTMLElement | string, text: string): void;
 
 } // namespace NQDOM
 
+namespace Random {
+
+function nextUint(): number;
+function nextElementId(): string;
+function nextPathComponent(length?: number): string;
+
+} // namespace Random
+
 type ControlConstructor<T extends BaseControl> = new (...args: any[]) => T;
 
 export abstract class ControlManager {
