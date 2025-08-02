@@ -23,8 +23,19 @@ const setTextContent = (val, text) => {
   }
 };
 
+const documentDescription = () => {
+  if (isExistsDocument) {
+    const descElm = document.querySelector('meta[name="description"][content]');
+    if (descElm)
+      return descElm.getAttribute("content");
+  }
+
+  return "";
+};
+
 export default {
   documentReady,
+  documentDescription,
   createElement,
   getElementByClassName,
   escapeHTML,

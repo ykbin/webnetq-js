@@ -3,6 +3,7 @@ declare module "webnetq-js" {
 namespace NQDOM {
 
 function documentReady(callback: (args: any) => void): void;
+function documentDescription(): string;
 function createElement(html: string): HTMLElement | undefined;
 function getElementByClassName(element: HTMLElement, className: string): HTMLElement | undefined;
 function escapeHTML(str: string): string;
