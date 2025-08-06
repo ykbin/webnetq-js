@@ -19,6 +19,13 @@ function nextPathComponent(length?: number): string;
 
 } // namespace Random
 
+namespace Util {
+
+function createObjectURL(obj: Blob | MediaSource): string;
+function revokeObjectURL(url: string): void;
+
+} // namespace Util
+
 type ControlConstructor<T extends BaseControl> = new (...args: any[]) => T;
 
 export abstract class ControlManager {
