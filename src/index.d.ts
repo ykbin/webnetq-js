@@ -64,4 +64,13 @@ export abstract class BaseControl {
   addEventListener(type: string, listener: (event: any) => void): void;
 }
 
+export class FileChunkLoader {
+  constructor(file: File);
+  start(): void;
+  stop(): void;
+  isLoad(): boolean;
+  setPreferOffset(value: number): void;
+  addEventListener(type: "chunk" | "done" | "error", listener: (args: any) => void): void;
+}
+
 } // module "webnetq-js"

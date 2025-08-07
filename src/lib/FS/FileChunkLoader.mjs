@@ -147,7 +147,7 @@ export default class {
         loadChunk.call(this, null, false)
       }, 0);
     }
-  };
+  }
   
   stop() {
     this._stop = true;
@@ -159,7 +159,7 @@ export default class {
       temp.prev = null;
     }
     this._firstChunk = null;
-  };
+  }
   
   setPreferOffset(value) {
     this._preferOffset = Math.floor(value / chunkSize) * chunkSize;
