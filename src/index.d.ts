@@ -73,4 +73,23 @@ export class FileChunkLoader {
   addEventListener(type: "chunk" | "done" | "error", listener: (args: any) => void): void;
 }
 
+type ThemeType = "light" | "dark";
+interface ThemChangeEvent {
+  theme: ThemeType;
+}
+
+export class Setting {
+  static LIGHT_VAL: "light";
+  static DARK_VAL: "dark";
+  static DATA_KEY: string;
+
+  constructor();
+  getTheme(): ThemeType;
+  setTheme(value: ThemeType): void;
+  toggleTheme(): void;
+  addEventListener(type: "themchange", listener: (event: ThemChangeEvent) => void): void;
+
+  static getInstance(): Setting;
+};
+
 } // module "webnetq-js"
