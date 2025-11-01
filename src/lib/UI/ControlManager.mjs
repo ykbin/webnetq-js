@@ -76,14 +76,13 @@ export default class ControlManager {
   createControl(param) {
     let component;
     if (typeof param === 'string') {
-      component = this._components.find((i) => i.template.name === param);
+      component = this._components.find((i) => i.ctor.name === param);
     }
     else if (typeof param === 'function') {
       component = this._components.find((i) => i.ctor === param);
     }
     if (component) {
-      const rootHTML = component.template.rootHTML;
-      const element = NQDOM.createElement(rootHTML);
+      const element = component.ctor.createElement(document);
       return this._createControl(component.ctor, element, component.template);
     }
     return null;
@@ -123,7 +122,7 @@ export default class ControlManager {
       return this._controls.find((i) => i.constructor === param);
     }
     if (typeof param === 'string') {
-      return this._controls.find((i) => i.template.name === param);
+      return this._controls.find((i) => i.constructor.name === param);
     }
     return undefined;
   }
@@ -133,7 +132,7 @@ export default class ControlManager {
       return this._controls.filter((i) => i.constructor === param);
     }
     if (typeof param === 'string') {
-      return this._controls.filter((i) => i.template.name === param);
+      return this._controls.filter((i) => i.constructor.name === param);
     }
     return [];
   }
