@@ -4,7 +4,7 @@ namespace NQDOM {
 
 function documentReady(callback: (args: any) => void): void;
 function documentDescription(): string;
-function createElement(html: string): HTMLElement | undefined;
+function createElement(html: string, document?: HTMLDocument): HTMLElement | undefined;
 function getElementByClassName(element: HTMLElement, className: string): HTMLElement | undefined;
 function escapeHTML(str: string): string;
 function setTextContent(val: HTMLElement | string, text: string): void;

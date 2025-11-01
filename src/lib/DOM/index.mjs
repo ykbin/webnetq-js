@@ -9,11 +9,21 @@ if (isExistsDocument) {
   templateElement = document.createElement('template');
 }
 
-const createElement = (html) => {
-  if (!templateElement || typeof html !== "string")
-    return undefined;
-  templateElement.innerHTML = html;
-  return templateElement.content.firstElementChild;
+const createElement = (html, document) => {
+  if (typeof html !== "string")
+    return;
+
+  if (document) {
+    const templateElm = document.createElement("template");
+    templateElm.innerHTML = html;
+    return templateElm.content.firstElementChild;
+  }
+  else if (templateElement) {
+    templateElement.innerHTML = html;
+    return templateElement.content.firstElementChild;
+  }
+
+  return;
 };
 
 const setTextContent = (val, text) => {
