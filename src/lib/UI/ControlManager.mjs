@@ -31,7 +31,7 @@ export default class ControlManager {
 
   _onLoad() {
     const _elementToControlMap = new Map();
-    for(const { ctor, template } of this._components) {
+    for(const { name, ctor, template } of this._components) {
       const idToControlMap = new Map();
       const elementToControlMap = new Map();
       
@@ -73,16 +73,16 @@ export default class ControlManager {
     }
   }
 
-  createControl(param) {
+  createControl(name, params) {
     let component;
-    if (typeof param === 'string') {
-      component = this._components.find((i) => i.ctor.name === param);
+    if (typeof name === 'string') {
+      component = this._components.find((i) => i.name === name);
     }
-    else if (typeof param === 'function') {
-      component = this._components.find((i) => i.ctor === param);
+    else if (typeof name === 'function') {
+      component = this._components.find((i) => i.ctor === name);
     }
     if (component) {
-      const element = component.ctor.createElement(document);
+      const element = component.createElement(document, params || {});
       return this._createControl(component.ctor, element, component.template);
     }
     return null;
@@ -117,29 +117,34 @@ export default class ControlManager {
     }
   }
 
-  getControl(param) {
-    if (typeof param === 'function') {
-      return this._controls.find((i) => i.constructor === param);
+  getConstructor(name) {
+      const component = this._components.find((i) => i.name === name);
+      return component ? component.ctor : undefined;
+  }
+
+  getControl(name) {
+    if (typeof name === 'string') {
+        name = this.getConstructor(name);
     }
-    if (typeof param === 'string') {
-      return this._controls.find((i) => i.constructor.name === param);
+    if (typeof name === 'function') {
+      return this._controls.find((i) => i.constructor === name);
     }
     return undefined;
   }
 
-  getControles(param) {
-    if (typeof param === 'function') {
-      return this._controls.filter((i) => i.constructor === param);
+  getControles(name) {
+    if (typeof name === 'string') {
+        name = this.getConstructor(name);
     }
-    if (typeof param === 'string') {
-      return this._controls.filter((i) => i.constructor.name === param);
+    if (typeof name === 'function') {
+      return this._controls.filter((i) => i.constructor === name);
     }
     return [];
   }
 
-  register(ctor, template) {
+  register(name, ctor, createElement, template) {
     if (typeof ctor === 'function') {
-      this._components.push({ ctor, template });
+      this._components.push({ name, ctor, createElement, template });
     }
   }
 
