@@ -1,6 +1,7 @@
 import documentReady from './DocumentReady.mjs';
 import getElementByClassName from './GetElementByClassName.mjs';
 import escapeHTML from './EscapeHTML.mjs';
+import { toHiccup, fromHiccup } from './Hiccup.mjs';
 
 const isExistsDocument = (typeof document === 'object' && document !== null);
 
@@ -50,4 +51,6 @@ export default {
   getElementByClassName,
   escapeHTML,
   setTextContent,
+  toHiccup,
+  fromHiccup,
 };

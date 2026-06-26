@@ -1,10 +1,13 @@
 {
-  "name": "webnetq-js",
-  "version": "0.0.1",
+  "name": "@yacubin/webnetq-js",
+  "version": "0.0.1-develop.1",
   "description": "Basic library for the Web",
   "type": "module",
   "main": "./src/index.mjs",
   "types": "./src/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yacubin/webnetq-js.git"
