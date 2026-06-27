@@ -2,24 +2,31 @@
   "name": "@yacubin/webnetq-js",
   "version": "0.0.1-develop.1",
   "description": "Basic library for the Web",
-  "type": "module",
-  "main": "./src/index.mjs",
-  "types": "./src/index.d.ts",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yacubin/webnetq-js.git"
-  },
-  "keywords": [
-    "web"
-  ],
   "author": "Yurii Yakubin",
+  "type": "module",
+  "main": "./dist/bundle.mjs",
+  "types": "./src/index.d.ts",
   "bugs": {
     "url": "https://github.com/yacubin/webnetq-js/issues"
   },
   "homepage": "https://github.com/yacubin/webnetq-js#readme",
-  "dependencies": {
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yacubin/webnetq-js.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "build:debug": "webpack --config webpack.config.mjs --mode development",
+    "build:release": "webpack --config webpack.config.mjs --mode production",
+    "postinstall": "npm run build:release"
+  },
+  "keywords": [
+    "web"
+  ],
+  "devDependencies": {
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
   }
 }
