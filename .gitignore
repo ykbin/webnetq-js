@@ -1,0 +1,11 @@
+# Ignore Visual Code
+/.vscode
+
+# Ignore node modules
+/node_modules
+
+# Ignore webpck output
+/dist
+
+# Ignore installed local dependencies
+/package-lock.json

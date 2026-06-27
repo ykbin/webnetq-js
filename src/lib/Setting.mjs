@@ -4,7 +4,7 @@ const DATA_KEY = 'theme';
 
 let _instance = null;
 
-export default class Setting {
+class Setting {
   _colorScheme;
   _prefersColorScheme = null;
   _listeners = {
@@ -79,3 +79,5 @@ export default class Setting {
 Setting.LIGHT_VAL = LIGHT_VAL;
 Setting.DARK_VAL = DARK_VAL;
 Setting.DATA_KEY = DATA_KEY;
+
+export default Setting;
